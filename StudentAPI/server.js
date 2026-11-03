@@ -6,9 +6,11 @@ app.use(express.json());
 
 const PORT = 3000;
 
+// In-memory student records
 let students = [];
 
-// POST - Add Student
+
+// TASK 2: POST - Add Student
 app.post('/api/students', (req, res) => {
 
     const { id, name, email, course, age } = req.body;
@@ -38,7 +40,7 @@ app.post('/api/students', (req, res) => {
 });
 
 
-// TASK 3: GET ALL STUDENTS
+// TASK 3: GET - All Students
 app.get('/api/students', (req, res) => {
 
     res.status(200).json(students);
@@ -46,7 +48,7 @@ app.get('/api/students', (req, res) => {
 });
 
 
-// TASK 3: GET STUDENT BY ID
+// TASK 3: GET - Student By ID
 app.get('/api/students/:id', (req, res) => {
 
     const id = Number(req.params.id);
@@ -60,7 +62,42 @@ app.get('/api/students/:id', (req, res) => {
     }
 
     res.status(200).json(student);
+});
 
+
+// TASK 4: PUT - Update Student
+app.put('/api/students/:id', (req, res) => {
+
+    const id = Number(req.params.id);
+
+    const index = students.findIndex(s => s.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({
+            message: "Student not found"
+        });
+    }
+
+    const { name, email, course, age } = req.body;
+
+    if (!name || !email || !course || age == null) {
+        return res.status(400).json({
+            message: "All fields are mandatory"
+        });
+    }
+
+    students[index] = {
+        id,
+        name,
+        email,
+        course,
+        age
+    };
+
+    res.status(200).json({
+        message: "Student updated successfully",
+        student: students[index]
+    });
 });
 
 
