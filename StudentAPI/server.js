@@ -6,7 +6,6 @@ app.use(express.json());
 
 const PORT = 3000;
 
-// In-memory array
 let students = [];
 
 // POST - Add Student
@@ -14,14 +13,12 @@ app.post('/api/students', (req, res) => {
 
     const { id, name, email, course, age } = req.body;
 
-    // Validate mandatory fields
     if (id == null || !name || !email || !course || age == null) {
         return res.status(400).json({
             message: "All fields are mandatory"
         });
     }
 
-    // Check duplicate ID
     const existingStudent = students.find(s => s.id === id);
 
     if (existingStudent) {
@@ -30,7 +27,6 @@ app.post('/api/students', (req, res) => {
         });
     }
 
-    // Create student
     const student = { id, name, email, course, age };
 
     students.push(student);
@@ -42,7 +38,7 @@ app.post('/api/students', (req, res) => {
 });
 
 
-// GET - Retrieve All Students
+// TASK 3: GET ALL STUDENTS
 app.get('/api/students', (req, res) => {
 
     res.status(200).json(students);
@@ -50,7 +46,7 @@ app.get('/api/students', (req, res) => {
 });
 
 
-// GET - Retrieve Student By ID
+// TASK 3: GET STUDENT BY ID
 app.get('/api/students/:id', (req, res) => {
 
     const id = Number(req.params.id);
@@ -68,7 +64,7 @@ app.get('/api/students/:id', (req, res) => {
 });
 
 
-// Start Server
+// START SERVER
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
